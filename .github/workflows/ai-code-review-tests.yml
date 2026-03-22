@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
     inputs:
       pr_number:
-        description: 'Pull Request Number'
+        description: 'PR number'
         required: true
       ref:
-        description: 'Git ref to test'
+        description: 'Git ref'
         required: true
 
 jobs:
@@ -16,14 +16,14 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
         with:
           ref: ${{ github.event.inputs.ref }}
       
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
+          python-version: '3.12'
       
       - name: Install dependencies
         run: |
@@ -31,16 +31,15 @@ jobs:
           pip install pytest pytest-cov
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
       
-      - name: Run tests with coverage
+      - name: Run tests
         run: |
-          pytest --cov=. --cov-report=json --cov-report=term -v --junitxml=test-results.xml
-        continue-on-error: true
+          pytest -v --cov=. --cov-report=json --cov-report=term
       
-      - name: Upload test results
-        uses: actions/upload-artifact@v4
+      - name: Upload results
         if: always()
+        uses: actions/upload-artifact@v3
         with:
           name: test-results
           path: |
-            test-results.xml
             coverage.json
+            .coverage
