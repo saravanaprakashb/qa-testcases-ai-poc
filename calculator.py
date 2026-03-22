@@ -1,4 +1,4 @@
-#simple addition of two numbers PR
+#simple addition of two numbers - test
 def add_two_numbers(a, b):
     '''Add two numbers and return the result'''
     return a + b
