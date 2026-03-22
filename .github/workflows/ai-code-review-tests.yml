@@ -6,9 +6,11 @@ on:
       pr_number:
         description: 'PR number'
         required: true
+        type: string
       ref:
-        description: 'Git ref'
+        description: 'Git ref (branch name)'
         required: true
+        type: string
 
 jobs:
   test:
@@ -18,7 +20,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.inputs.ref }}
+          ref: ${{ inputs.ref }}
       
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -33,7 +35,7 @@ jobs:
       
       - name: Run tests
         run: |
-          pytest -v --cov=. --cov-report=json --cov-report=term
+          pytest -v --tb=short --cov=. --cov-report=json --cov-report=term
       
       - name: Upload results
         if: always()
@@ -43,3 +45,4 @@ jobs:
           path: |
             coverage.json
             .coverage
+
