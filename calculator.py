@@ -1,7 +1,7 @@
 #simple addition of two numbers
 def add_two_numbers(a, b):
     '''Add two numbers and return the result'''
-    return a + b
+    return a / b
 
 def main():
     print('5 + 10 =', add_two_numbers(5, 10))
